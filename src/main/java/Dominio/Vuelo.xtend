@@ -46,7 +46,6 @@ class Vuelo {
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	Set<Escala> escalas = new HashSet
 	
-//	transient static String formatoVerFechas = "dd/MM/yyyy - hh:mm 'hs'"
 	transient static SimpleDateFormat dateToString = new SimpleDateFormat("dd/MM/yyyy - hh:mm 'hs'")
 
 	new() {

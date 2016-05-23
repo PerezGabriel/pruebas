@@ -1,55 +1,36 @@
 package Dominio
 
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.HashSet
 import java.util.Set
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToMany
-import javax.persistence.ManyToOne
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.model.UserException
 import org.uqbar.commons.utils.Observable
 
-@Entity
 @Observable
 @Accessors
 class Busqueda {
 
-	@Id
-	@GeneratedValue
-	private Long id
 
-	@Column
 	Date fechaRealizacion
 
-	@ManyToOne()
 	public Usuario quienBusca
 
-	@ManyToMany()
-	public Set<Vuelo> resultados = new HashSet
+	public Set<Vuelo> resultados = newHashSet
 
-	@ManyToOne
 	Aeropuerto origen
 
-	@ManyToOne
 	Aeropuerto destino
 
-	@Column
 	Date desdeFecha
 
-	@Column
 	Date hastaFecha
 
-	@Column(length=150)
 	Double maxPrecio
 
-	new() {
-	}
-
+	transient static SimpleDateFormat dateToString = new SimpleDateFormat("dd/MM/yyyy - hh:mm 'hs'")
+	
 	new(Aeropuerto inicio, Aeropuerto fin, Date desde, Date hasta, Double max, Usuario usr) {
 		origen = inicio
 		destino = fin
@@ -58,12 +39,6 @@ class Busqueda {
 		maxPrecio = max
 		quienBusca = usr
 		fechaRealizacion = Calendar.getInstance.getTime
-	}
-
-	new(Date desde, Date hasta, Usuario usr) {
-		desdeFecha = desde
-		hastaFecha = hasta
-		quienBusca = usr
 	}
 
 	def validacionFecha() {
@@ -79,18 +54,22 @@ class Busqueda {
 	}
 	
 	def getCriterioDeBusqueda(){
-		var String criterio = "Se buscaron vuelos que cumplan con"
+		var String criterio = "Se buscaron vuelos que cumplan con:"
 		
 		if(origen != null){criterio += " haber partido de " + origen}
 		if(destino != null){criterio += " tener como destino " + destino}
-		if(desdeFecha != null){criterio += " salir despues del " + desdeFecha}
-		if(hastaFecha != null){criterio += " llegar antes del " + hastaFecha}
+		if(desdeFecha != null){criterio += " salir despues del " + dateToString.format(desdeFecha)}
+		if(hastaFecha != null){criterio += " llegar antes del " + dateToString.format(hastaFecha)}
 		if(maxPrecio != null){criterio += " pagar menos que " + maxPrecio}
-		if(criterio == "Se buscaron vuelos que cumplan con"){criterio = "Se buscaron todos los vuelos"}
+		if(criterio.equals("Se buscaron vuelos que cumplan con:")){criterio = "Se buscaron todos los vuelos"}
 		criterio
 	}
 	
 	def getCantidadDeResultados(){
 		resultados.size()
+	}
+	
+	def getFechaRealizacionStr(){
+		dateToString.format(fechaRealizacion)
 	}
 }

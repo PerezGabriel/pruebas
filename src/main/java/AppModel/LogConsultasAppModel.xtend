@@ -19,7 +19,7 @@ class LogConsultasAppModel {
 
 	Busqueda busquedaSeleccionada = null
 
-	List<Busqueda> resultados = newArrayList
+	List<Busqueda> resultados = null
 	
 	new(Usuario usuario) {
 		usr = usuario
@@ -32,6 +32,7 @@ class LogConsultasAppModel {
 	
 	def buscar(){
 		resultados = BusquedasRepositorio.getInstance.buscar(usr, fechaDesde, fechaHasta)
-		println(resultados.get(0).resultados.size())
+		if(resultados.isEmpty){ resultados = null}
 	}
+
 }

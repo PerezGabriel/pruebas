@@ -80,7 +80,7 @@ class BusquedaVuelo extends TransactionalDialog<BusquedaVueloAppModel> {
 				]
 				
 				new Button(it) => [
-					caption = "Limpiar"
+					caption = "Limpiar Campos"
 					onClick [|modelObject.clear]
 				]
 			]
@@ -127,18 +127,25 @@ class BusquedaVuelo extends TransactionalDialog<BusquedaVueloAppModel> {
 	}
 
 	def botoneraAcciones(Panel mainPanel) {
-		val elementSelected = new NotNullObservable("vueloSeleccionado")
 		val Panel panel = new Panel(mainPanel).layout = new HorizontalLayout()
+		new Button(panel) => [
+			width = 100
+			caption = "Volver"
+			onClick [|this.close]
+		]
+		val resultados = new NotNullObservable("resultados")
+		new Button(panel) => [
+			width = 100
+			caption = "Limpiar Grilla"
+			onClick [|modelObject.resultados = null]
+			bindEnabled(resultados)
+		]
+		val elementSelected = new NotNullObservable("vueloSeleccionado")
 		new Button(panel) => [
 			width = 100
 			caption = "Reservar Asientos"
 			onClick [|this.reservas]
 			bindEnabled(elementSelected)
-		]
-		new Button(panel) => [
-			width = 100
-			caption = "Volver"
-			onClick [|this.accept]
 		]
 	}
 

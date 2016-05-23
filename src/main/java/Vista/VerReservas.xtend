@@ -117,6 +117,5 @@ class VerReservas extends TransactionalDialog<VerReservasAppModel>{
 		dialog.open
 	}
 	
-	override protected addActions(Panel actionsPanel) {
-	}
+	override protected addActions(Panel actionsPanel) {}
 }

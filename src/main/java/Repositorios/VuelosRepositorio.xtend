@@ -2,9 +2,6 @@ package Repositorios
 
 import Dominio.Busqueda
 import Dominio.Vuelo
-import java.util.Calendar
-import java.util.GregorianCalendar
-import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.hibernate.Criteria
 import org.hibernate.HibernateException
@@ -24,7 +21,7 @@ class VuelosRepositorio extends RepositorioDefault<Vuelo> {
 		repositorio
 	}
 
-	def Set<Vuelo> searchByBusqueda(Busqueda unaBusqueda) {
+	def searchByBusqueda(Busqueda unaBusqueda) {
 		val session = openSession
 		try {
 			val criteria = session.createCriteria(entityType)
@@ -37,14 +34,7 @@ class VuelosRepositorio extends RepositorioDefault<Vuelo> {
 															.add(Restrictions.le("tarifa.precio", unaBusqueda.maxPrecio))
 			}
 			
-			var Set<Vuelo> vuelosBuscados = criteria.list.toSet
-//			if(unaBusqueda.maxPrecio != null){ // por precio final
-//				vuelosBuscados = vuelosBuscados.filter[conTarifaMenorA(unaBusqueda.maxPrecio)].toSet
-//			}
-			//le asigno el resultado a la busqueda
-			unaBusqueda.fechaRealizacion =  Calendar.getInstance().getTime();
-			unaBusqueda.resultados = vuelosBuscados
-			vuelosBuscados
+			unaBusqueda.setResultados(criteria.list.toSet)
 		} catch (HibernateException e) {
 			throw new RuntimeException(e)
 		} finally {

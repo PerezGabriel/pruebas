@@ -1,6 +1,5 @@
 package Vista
 
-import AppModel.DetalleDeBusquedaAppModel
 import AppModel.LogConsultasAppModel
 import Dominio.Busqueda
 import org.uqbar.arena.aop.windows.TransactionalDialog
@@ -53,7 +52,7 @@ class LogConsultas extends TransactionalDialog<LogConsultasAppModel> {
 					width = 80
 				]
 				new Button(it) => [
-					caption = "Limpiar"
+					caption = "Limpiar Campos"
 					onClick [|modelObject.clear]
 				]
 			]
@@ -69,17 +68,17 @@ class LogConsultas extends TransactionalDialog<LogConsultasAppModel> {
 			new Column<Busqueda>(it) => [
 				title = "Fecha"
 				fixedSize = 100
-				bindContentsToProperty("fechaRealizacion") //ver a que se bindean estas propiedades
+				bindContentsToProperty("fechaRealizacionStr")
 			]
 			new Column<Busqueda>(it) => [
 				title = "Criterio de Busqueda"
 				fixedSize = 100
-				bindContentsToProperty("criterioDeBusqueda") //ver a que se bindean estas propiedades
+				bindContentsToProperty("criterioDeBusqueda")
 			]
 			new Column<Busqueda>(it) => [
 				title = "Vuelos"
 				fixedSize = 128
-				bindContentsToProperty("cantidadDeResultados") //ver a que se bindean estas propiedades
+				bindContentsToProperty("cantidadDeResultados")
 			]
 		]
 	}
@@ -87,7 +86,21 @@ class LogConsultas extends TransactionalDialog<LogConsultasAppModel> {
 	def botoneraAcciones(Panel mainPanel) {
 
 		val Panel panel = new Panel(mainPanel).layout = new HorizontalLayout()
-
+		
+		new Button(panel) => [
+			width = 100
+			caption = "Volver"
+			onClick [|this.accept]
+		]
+		
+		val resultados = new NotNullObservable("resultados")
+		new Button(panel) => [
+			width = 100
+			caption = "Limpiar Grilla"
+			onClick [|modelObject.resultados = null]
+			bindEnabled(resultados)
+		]
+		
 		new Button(panel) => [
 			caption = "Detalles de la Busqueda"
 			width = 150
@@ -95,15 +108,10 @@ class LogConsultas extends TransactionalDialog<LogConsultasAppModel> {
 			bindEnabled(new NotNullObservable("busquedaSeleccionada"))
 		]
 
-		new Button(panel) => [
-			width = 100
-			caption = "Volver"
-			onClick [|this.accept]
-		]
 	}
 
 	def resultadosDeLaBusqueda() {
-		this.openDialog(new DetalleDeBusqueda(this, new DetalleDeBusquedaAppModel(modelObject.busquedaSeleccionada)))
+		this.openDialog(new DetalleDeBusqueda(this, modelObject.busquedaSeleccionada))
 	}
 
 	def openDialog(Dialog<?> dialog) {

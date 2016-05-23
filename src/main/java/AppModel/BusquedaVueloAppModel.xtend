@@ -28,7 +28,7 @@ class BusquedaVueloAppModel {
 	Integer tarifaMax
 	
 	Vuelo vueloSeleccionado
-	Set <Vuelo> resultados = newHashSet
+	Set <Vuelo> resultados = null
 	
 	new (Usuario unUsr){
 		usr = unUsr
@@ -37,15 +37,13 @@ class BusquedaVueloAppModel {
 
 	def buscar() {
 		var Double precioMaximo = null
-		if(tarifaMax != null){precioMaximo = new Double(tarifaMax)} // para poder limpiar el campo
-		var Busqueda busqueda = new Busqueda(origen, destino, fechaDesde, fechaHasta, precioMaximo ,usr)
-		resultados = newHashSet(VuelosRepositorio.getInstance.searchByBusqueda(busqueda))
-		println(resultados.size())
-		busqueda.resultados.addAll(resultados)
-		println(busqueda.resultados.size())
-		//Agregado para entrega 3 Mongo
-		BusquedasRepositorio.getInstance.guardarBusquedas(busqueda)
+		if(tarifaMax != null){precioMaximo = new Double(tarifaMax)}
 		
+		var Busqueda busqueda = new Busqueda(origen, destino, fechaDesde, fechaHasta, precioMaximo ,usr)
+		VuelosRepositorio.instance.searchByBusqueda(busqueda)
+		BusquedasRepositorio.getInstance.guardarBusquedas(busqueda)
+		resultados = busqueda.getResultados
+		if(resultados.isEmpty){resultados = null} //para la vista.
 	}
 	
 	def clear(){
