@@ -4,20 +4,24 @@ import java.util.HashSet
 import java.util.Set
 import javax.persistence.CascadeType
 import javax.persistence.Column
-import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
-import javax.persistence.Id
 import javax.persistence.OneToMany
 import org.eclipse.xtend.lib.annotations.Accessors
+//import org.mongodb.morphia.annotations.Entity
+//import org.mongodb.morphia.annotations.Id
 import org.uqbar.commons.utils.Observable
+
 import static org.uqbar.commons.model.ObservableUtils.firePropertyChanged
+import java.io.Serializable
+import javax.persistence.Entity
+import javax.persistence.Id
 
-
+//@Entity
 @Entity
 @Observable
 @Accessors
-class Usuario {
+class Usuario implements Serializable{
 	
 	@Id
 	@GeneratedValue

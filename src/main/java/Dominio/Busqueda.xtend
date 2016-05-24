@@ -7,26 +7,38 @@ import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.model.UserException
 import org.uqbar.commons.utils.Observable
+import org.mongodb.morphia.annotations.Entity
+import org.mongodb.morphia.annotations.Id
+import org.bson.types.ObjectId
+import org.mongodb.morphia.annotations.Property
 
+@Entity("consultas")
 @Observable
 @Accessors
 class Busqueda {
 
+@Id ObjectId id
 
+    @Property("fecha")	
 	Date fechaRealizacion
 
-	public Usuario quienBusca
+	transient public Usuario quienBusca
 
 	public Set<Vuelo> resultados = newHashSet
 
+	//@Property("origen")
 	Aeropuerto origen
 
+	//@Property("destino")
 	Aeropuerto destino
 
+	//@Property("fechaDesde")
 	Date desdeFecha
 
+	//@Property("fechaHasta")
 	Date hastaFecha
 
+	//@Property("maxPrecio")
 	Double maxPrecio
 
 	transient static SimpleDateFormat dateToString = new SimpleDateFormat("dd/MM/yyyy - hh:mm 'hs'")

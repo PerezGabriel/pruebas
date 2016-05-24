@@ -21,6 +21,7 @@ import java.util.HashSet
 import java.util.List
 import java.util.Set
 import org.uqbar.arena.bootstrap.Bootstrap
+import Repositorios.LogsRepository
 
 class AdmVuelosBootstrap implements Bootstrap {
 
@@ -66,6 +67,7 @@ class AdmVuelosBootstrap implements Bootstrap {
 	TarifaBandaNegativa tBNegativa_1
 	TarifaBandaNegativa tBNegativa_2
 	TarifaBandaNegativa tBNegativa_3
+	LogsRepository logs 
 
 	override run() {
 		initAeropuertos
@@ -343,6 +345,7 @@ class AdmVuelosBootstrap implements Bootstrap {
 		usr.nombre = "Adrian Barbani"
 		fede = new Usuario("fede", "fede")
 		fede.nombre = "Federico Peña"
+		logs = new LogsRepository()
 		
 		var List<Reserva> reservasParaUsr = new ArrayList<Reserva>
 		reservasParaUsr => [
