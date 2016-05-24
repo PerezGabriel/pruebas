@@ -13,6 +13,7 @@ import java.util.List
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.uqbar.commons.utils.Observable
+import Repositorios.LogsRepository
 
 @Accessors
 @Observable	
@@ -44,6 +45,8 @@ class BusquedaVueloAppModel {
 		BusquedasRepositorio.getInstance.guardarBusquedas(busqueda)
 		resultados = busqueda.getResultados
 		if(resultados.isEmpty){resultados = null} //para la vista.
+		var logs = new LogsRepository
+		logs.insertarConsulta(busqueda)
 	}
 	
 	def clear(){

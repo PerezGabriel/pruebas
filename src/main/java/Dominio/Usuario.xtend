@@ -21,7 +21,7 @@ import javax.persistence.Id
 @Entity
 @Observable
 @Accessors
-class Usuario implements Serializable{
+class Usuario {
 	
 	@Id
 	@GeneratedValue

@@ -26,19 +26,19 @@ class Busqueda {
 
 	public Set<Vuelo> resultados = newHashSet
 
-	//@Property("origen")
+	@Property("origen")
 	Aeropuerto origen
 
-	//@Property("destino")
+	@Property("destino")
 	Aeropuerto destino
 
-	//@Property("fechaDesde")
+	@Property("fechaDesde")
 	Date desdeFecha
 
-	//@Property("fechaHasta")
+	@Property("fechaHasta")
 	Date hastaFecha
 
-	//@Property("maxPrecio")
+	@Property("maxPrecio")
 	Double maxPrecio
 
 	transient static SimpleDateFormat dateToString = new SimpleDateFormat("dd/MM/yyyy - hh:mm 'hs'")
