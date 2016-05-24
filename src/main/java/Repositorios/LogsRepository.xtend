@@ -29,7 +29,7 @@ new() {
 		//coleccion.save(documento)
 	}
 	
-	def Busqueda insertarConsulta(Busqueda t){
+	def T insertarConsulta(T t){
 		create(t)
 		//val obj = despejarCampos(t)
 		//ds.save(obj)
@@ -47,13 +47,13 @@ new() {
 
 	def List<T> searchByExample(T t){}
 
-	/*def T createIfNotExists(T t) {
+	def T createIfNotExists(T t) {
 		val entidadAModificar = getByExample(t)
 		if (entidadAModificar != null) {
 			return entidadAModificar
 		}
 		create(t)
-	}*/
+	}
 
 	def void update(T t) {
 		val result = ds.update(t, this.defineUpdateOperations(t))
@@ -64,17 +64,17 @@ new() {
     	
     }
 
-	def Busqueda create(Busqueda t) {
+	def T create(T t) {
 		val obj = despejarCampos(t)
 		ds.save(obj)
 		obj
 	}
 
-	def Busqueda despejarCampos(Object t) {
+	def T despejarCampos(Object t) {
 		val fields = new ArrayList(t.class.getDeclaredFields)
 		val camposAModificar = fields.filter
 [!Modifier.isTransient(it.modifiers)]
-		val  result = t.class.newInstance as Busqueda
+		val T result = t.class.newInstance as T
 		camposAModificar.forEach [
 			it.accessible = true
 			var valor = it.get(t)
