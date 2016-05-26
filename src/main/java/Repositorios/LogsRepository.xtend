@@ -13,6 +13,7 @@ import java.util.ArrayList
 import java.lang.reflect.Modifier
 import java.util.List
 import org.mongodb.morphia.query.UpdateOperations
+import Dominio.Consulta
 
 class LogsRepository<T>{
 	private Datastore ds
@@ -25,15 +26,17 @@ new() {
 	    
 	
 		//var coleccion = mongo.getDatabase("base").getCollection("prueba")
-		//var documento = new BasicDBObject().append("Hola Mundo",String)
+		//var documento = new BasicDBObject().append("1",Consulta)
 		//coleccion.save(documento)
 	}
 	
-	def T insertarConsulta(T t){
-		create(t)
+	//def Class<T> insertarConsulta(Class<T> obj){
+    def T insertarConsulta(T obj){
+		//create(t )
 		//val obj = despejarCampos(t)
-		//ds.save(obj)
-		//obj
+		
+		ds.save(obj)
+		obj
 	}
 	
 	def T getByExample(T example) {
@@ -47,13 +50,13 @@ new() {
 
 	def List<T> searchByExample(T t){}
 
-	def T createIfNotExists(T t) {
+	/*def T createIfNotExists(T t) {
 		val entidadAModificar = getByExample(t)
 		if (entidadAModificar != null) {
 			return entidadAModificar
 		}
 		create(t)
-	}
+	}*/
 
 	def void update(T t) {
 		val result = ds.update(t, this.defineUpdateOperations(t))
@@ -64,24 +67,24 @@ new() {
     	
     }
 
-	def T create(T t) {
+	def Class<T> create(Class<T> t) {
 		val obj = despejarCampos(t)
 		ds.save(obj)
 		obj
 	}
 
-	def T despejarCampos(Object t) {
+	def Class<T> despejarCampos(Class<T> t) {
 		val fields = new ArrayList(t.class.getDeclaredFields)
 		val camposAModificar = fields.filter
 [!Modifier.isTransient(it.modifiers)]
-		val T result = t.class.newInstance as T
+		val result = t.class.newInstance 
 		camposAModificar.forEach [
 			it.accessible = true
 			var valor = it.get(t)
 			if (valor != null) {
 				try {
 					valor.class.getDeclaredField("changeSupport")
-					valor = despejarCampos(valor)
+					valor = despejarCampos(valor as Class<T>)
 				} catch (NoSuchFieldException e) {
 					// todo ok, no es un valor que tenga changeSupport
 				}
