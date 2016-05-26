@@ -18,15 +18,19 @@ class Consulta {
 	
 	@Id ObjectId id
 	
+	@Property(" nombre usuario")
+	String user
+	
 	@Property("criterio")
 	String criterio
 	
-	//@Embedded
-	@Transient
-	Set results
+	//@Transient
+	@Embedded
+	private Set<ResultadoConsulta> results
 	
 	new(Busqueda busqueda){
     criterio = busqueda.criterioDeBusqueda
+    user = busqueda.getQuienBusca.nombre
     results = new HashSet
    // results = busqueda.resultados
     //this.transformarLista
